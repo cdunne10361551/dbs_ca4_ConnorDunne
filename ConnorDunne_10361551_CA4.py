@@ -1,3 +1,4 @@
+import pandas as pd
 
 def read_file(changes_file):
     # use strip to strip out spaces and trim the line.
@@ -7,7 +8,7 @@ def read_file(changes_file):
 def get_commits(data):
     sep = 72*'-'
     commits = []
-    current_commit = None
+    #current_commit = None
     index = 0
     while index < len(data):
         try:
@@ -17,14 +18,17 @@ def get_commits(data):
             commit = {'revision': details[0].strip(),
                 'author': details[1].strip(),
                 'date': details[2].strip(),
-                'number_of_lines': details[3].strip().split(' ')[1]
+                'number_of_lines': details[3].strip().split(' ')[0]
             }
             # add details to the list of commits.
             commits.append(commit)
+             #use index to locate sep position and start on next line
             index = data.index(sep, index + 1)
         except IndexError:
             break
-    return commits
+        
+    df = pd.DataFrame(data = commits)
+    return df
 
 if __name__ == '__main__':
     # open the file - and read all of the lines.
@@ -33,8 +37,8 @@ if __name__ == '__main__':
     commits = get_commits(data)
 
     # print the number of lines read
-    print(len(data))
+    ##print(len(data))
     #print(commits)
-    print(commits[0])
-    print(commits[1]['author'])
-    print(len(commits))
+    ##print(commits[0])
+    ##print(commits[1]['author'])
+    ##print(len(commits))
