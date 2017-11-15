@@ -1,12 +1,20 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Wed Nov 15 18:20:12 2017
+
+@author: 10361551
+"""
+
 import pandas as pd
 import numpy as np
 from pandas import Series, DataFrame, Panel
+from pandas import Series as df
 
 def read_file(changes_file):
     # use strip to strip out spaces and trim the line.
     data = [line.strip() for line in open(changes_file, 'r')]
     return data
-
+    
 def get_commits(data):
     sep = 72*'-'
     #new_sep = "Changed paths:"
@@ -91,4 +99,16 @@ if __name__ == '__main__':
     dates = pd.date_range('2015-07', '2015-12', freq='D')
     AO = Series(commits_sorted["Add_Counts"], index=commits_sorted["date"])
     commits.plot(commits_sorted["Add_Counts"],commits_sorted["date"])
-    AO = Series(commits_sorted["date"],index =commits_sorted["Add_Counts"])
+    add_counts_list = pd.to_numeric(commits_sorted["Add_Counts"].tolist())
+    delete_counts_list = pd.to_numeric(commits_sorted["Delete_Counts"].tolist())
+    modify_counts_list = pd.to_numeric(commits_sorted["Modify_Counts"].tolist())
+    AO_Add = Series(add_counts_list,index =commits_sorted["date"])
+    AO_Modify = Series(modify_counts_list,index =commits_sorted["date"])
+    AO_Delete = Series(delete_counts_list,index =commits_sorted["date"])
+    AO_Add.plot()
+    AO_Modify.plot()
+    AO_Delete.plot()
+    action_times = DataFrame({"AO_Add":AO_Add,"AO_Modify":AO_Modify,"AO_Delete":AO_Delete})
+        action_times.plot(subplots=True)
+    action_times.plot(subplots=True)
+    commits.type
