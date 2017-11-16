@@ -1,7 +1,13 @@
 # -*- coding: utf-8 -*-
 """
-Created on Wed Nov 15 18:20:12 2017
+Created on Thu Nov 16 17:28:44 2017
 
+@author: Connor Dunne
+"""
+
+# -*- coding: utf-8 -*-
+"""
+Created on Wed Nov 15 18:20:12 2017
 @author: 10361551
 """
 
@@ -72,6 +78,7 @@ def clean_dates(dates):
         d_clean = dates[i][0:index-1]
         d_fixed.append(d_clean)
     return d_fixed
+
     
 if __name__ == '__main__':
     # open the file - and read all of the lines.
@@ -108,7 +115,15 @@ if __name__ == '__main__':
     AO_Add.plot()
     AO_Modify.plot()
     AO_Delete.plot()
+    AO_AddW = AO_Add.resample('W').sum()
+    AO_ModifyW = AO_Modify.resample('W').sum()
+    AO_DeleteW = AO_Delete.resample('W').sum()
     action_times = DataFrame({"AO_Add":AO_Add,"AO_Modify":AO_Modify,"AO_Delete":AO_Delete})
-        action_times.plot(subplots=True)
+    action_times.plot()
     action_times.plot(subplots=True)
+    action_timesW = DataFrame({"AO_Add":AO_AddW,"AO_Modify":AO_ModifyW,"AO_Delete":AO_DeleteW})
+    action_timesW.plot()
+    action_timesW.plot(subplots=True)
     commits.type
+    
+    
