@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 """
 Created on Thu Nov 16 17:28:44 2017
-
 @author: Connor Dunne
 """
 
@@ -15,6 +14,7 @@ import pandas as pd
 import numpy as np
 from pandas import Series, DataFrame, Panel
 from pandas import Series as df
+
 
 def read_file(changes_file):
     # use strip to strip out spaces and trim the line.
@@ -97,9 +97,10 @@ if __name__ == '__main__':
     ##print(len(commits))
     #type(commits_sorted["Add_Counts"][0])
     
-    #analysis
+    #time series analysis
     commits['date'] = commits['date'].astype('datetime64[ns]')
     commits["Add_Counts"] = pd.to_numeric(commits["Add_Counts"])
+    commits_sorted["number_of_lines"] = pd.to_numeric(commits_sorted["number_of_lines"])
     pd.to_numeric(commits["Delete_Counts"])
     pd.to_numeric(commits["Modify_Counts"])
     commits_sorted = commits.sort_values(by = "date")
@@ -126,4 +127,29 @@ if __name__ == '__main__':
     action_timesW.plot(subplots=True)
     commits.type
     
+    #descriptive statistics
+    commits_sorted.sum()
+    commits_sorted.mean()
+    commits_sorted["Add_Counts"].cumsum()
+    commits_sorted["Modify_Counts"].cumsum()
+    commits_sorted["Delete_Counts"].cumsum()
+    commits_sorted.describe()
+    commits_sorted.var()
+    commits_sorted.std()
+    commits_sorted.skew()
+    commits_sorted.kurt()
+    commits_sorted.corr()
+    skew = commits_sorted.skew()
+    print skew
+    commits_sorted.boxplot()
+    
+    mean = np.mean(elements, axis=0)
+    sd = np.std(elements, axis=0)
+    add_list = commits_sorted["Add_Counts"]
+    elements = np.array(commits_sorted["Add_Counts"])
+    final_list = [x for x in add_list if (x > mean - 2 * sd)]
+    final_list = [x for x in final_list if (x < mean + 2 * sd)]
+    skew = final_list.skew()
+    print skew
+    final_list.boxplot()
     
