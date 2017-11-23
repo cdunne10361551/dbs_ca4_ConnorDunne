@@ -13,7 +13,7 @@ Created on Wed Nov 15 18:20:12 2017
 import pandas as pd
 import numpy as np
 from pandas import Series, DataFrame, Panel
-from pandas import Series as df
+from pandas import Series, DataFrame as df
 
 
 def read_file(changes_file):
@@ -153,3 +153,7 @@ if __name__ == '__main__':
     print skew
     final_list.boxplot()
     
+    
+    #actions per user
+    commits_sorted["Add_Counts"].sum()
+    commits_sorted.loc[commits_sorted["author"]=="Thomas","Delete_Counts"].sum()
