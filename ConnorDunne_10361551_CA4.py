@@ -12,7 +12,6 @@ Created on Wed Nov 15 18:20:12 2017
 
 import pandas as pd
 import numpy as np
-from pandas import Series, DataFrame, Panel
 from pandas import Series, DataFrame as df
 
 
@@ -67,8 +66,8 @@ def get_commits(data):
         except IndexError:
             break
         
-    df = pd.DataFrame(data = commits)
-    return df
+    dframe = pd.DataFrame(data = commits)
+    return dframe
 
 def clean_dates(dates):
     start_ind = "+"
@@ -87,8 +86,14 @@ if __name__ == '__main__':
     commits = get_commits(data)
     d_fixed = clean_dates(commits["date"])
     commits["date"] = d_fixed
+    commits['date'] = commits['date'].astype('datetime64[ns]')
+    commits["Add_Counts"] = commits["Add_Counts"].astype(int)
+    commits["Delete_Counts"] = commits["Delete_Counts"].astype(int)
+    commits["Modify_Counts"] = commits["Modify_Counts"].astype(int)
+    commits["number_of_lines"] = commits["number_of_lines"].astype(int)
+    #commits["number_of_lines"].astype
 
-    commits["date"]
+    #commits["date"]
     # print the number of lines read
     ##print(len(data))
     #print(commits)
@@ -96,64 +101,3 @@ if __name__ == '__main__':
     ##print(commits[1]['author'])
     ##print(len(commits))
     #type(commits_sorted["Add_Counts"][0])
-    
-    #time series analysis
-    commits['date'] = commits['date'].astype('datetime64[ns]')
-    commits["Add_Counts"] = pd.to_numeric(commits["Add_Counts"])
-    commits_sorted["number_of_lines"] = pd.to_numeric(commits_sorted["number_of_lines"])
-    pd.to_numeric(commits["Delete_Counts"])
-    pd.to_numeric(commits["Modify_Counts"])
-    commits_sorted = commits.sort_values(by = "date")
-    dates = pd.date_range('2015-07', '2015-12', freq='D')
-    AO = Series(commits_sorted["Add_Counts"], index=commits_sorted["date"])
-    commits.plot(commits_sorted["Add_Counts"],commits_sorted["date"])
-    add_counts_list = pd.to_numeric(commits_sorted["Add_Counts"].tolist())
-    delete_counts_list = pd.to_numeric(commits_sorted["Delete_Counts"].tolist())
-    modify_counts_list = pd.to_numeric(commits_sorted["Modify_Counts"].tolist())
-    AO_Add = Series(add_counts_list,index =commits_sorted["date"])
-    AO_Modify = Series(modify_counts_list,index =commits_sorted["date"])
-    AO_Delete = Series(delete_counts_list,index =commits_sorted["date"])
-    AO_Add.plot()
-    AO_Modify.plot()
-    AO_Delete.plot()
-    AO_AddW = AO_Add.resample('W').sum()
-    AO_ModifyW = AO_Modify.resample('W').sum()
-    AO_DeleteW = AO_Delete.resample('W').sum()
-    action_times = DataFrame({"AO_Add":AO_Add,"AO_Modify":AO_Modify,"AO_Delete":AO_Delete})
-    action_times.plot()
-    action_times.plot(subplots=True)
-    action_timesW = DataFrame({"AO_Add":AO_AddW,"AO_Modify":AO_ModifyW,"AO_Delete":AO_DeleteW})
-    action_timesW.plot()
-    action_timesW.plot(subplots=True)
-    commits.type
-    
-    #descriptive statistics
-    commits_sorted.sum()
-    commits_sorted.mean()
-    commits_sorted["Add_Counts"].cumsum()
-    commits_sorted["Modify_Counts"].cumsum()
-    commits_sorted["Delete_Counts"].cumsum()
-    commits_sorted.describe()
-    commits_sorted.var()
-    commits_sorted.std()
-    commits_sorted.skew()
-    commits_sorted.kurt()
-    commits_sorted.corr()
-    skew = commits_sorted.skew()
-    print skew
-    commits_sorted.boxplot()
-    
-    mean = np.mean(elements, axis=0)
-    sd = np.std(elements, axis=0)
-    add_list = commits_sorted["Add_Counts"]
-    elements = np.array(commits_sorted["Add_Counts"])
-    final_list = [x for x in add_list if (x > mean - 2 * sd)]
-    final_list = [x for x in final_list if (x < mean + 2 * sd)]
-    skew = final_list.skew()
-    print skew
-    final_list.boxplot()
-    
-    
-    #actions per user
-    commits_sorted["Add_Counts"].sum()
-    commits_sorted.loc[commits_sorted["author"]=="Thomas","Delete_Counts"].sum()
